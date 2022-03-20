@@ -1,27 +1,32 @@
 import React, { useState } from 'react';
-import ContactTable from './ContactTable';
-import Menu from '../Menu';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import ContactList from './ContactList';
+import { usersContact } from '../../api/data';
+import CreateContactForm from './CreateContactForm';
 
 const Contacts = () => {
-    const usersContact = [
-      { id: 1, firstname: 'Tania', lastname: 'floppydiskette', email:'dammykoju@gmail', phonenumber:'07038246997' },
-      { id: 2, firstname: 'Craig', lastname: 'siliconeidolon',email:'dammykoj@gmail', phonenumber:'07038246997' },
-      { id: 3, firstname: 'Ben', lastname: 'benisphere', email:'dammykojuu@gmail', phonenumber:'07038246997' },
-    ]
-  
-    const [contacts, setContact] = useState(usersContact)
+    const [contacts, setContacts] = useState(usersContact)
+
+const createContact = (contact) =>{
+  contact.id = contacts.lenth + 1
+  setContacts([...contacts, contact])
+}
+
+
+
+
+
+
   return (
     <>
-  
+  <Container>
         <Row>
-          <Col xs="3"><Menu /></Col>
-          <Col xs="4">
+          <Col xs="7">
             <ContactList contacts= {contacts} />
             </Col>
+            <CreateContactForm createContact ={createContact}/>
         </Row>
-   
+        </Container>
 
     </>
   )
