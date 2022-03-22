@@ -1,45 +1,37 @@
-import React from 'react';
+import userEvent from '@testing-library/user-event';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import {SaveButton, CancelButton} from '../Button'
+import {SaveButton, CancelButton, InputText,Line} from '../Button'
 
 
-const CreateContactForm = () => {
 
-  const Wrapper = styled.div`
-  color:red
-  `
-  const Input = styled.input`
-  box-flex: 1;
-    flex-grow: 1;
-    flex-shrink: 1;
-    background-color: transparent;
-    border: none;
-    display: block;
-    font: 400 16px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
-    height: 24px;
-    line-height: 24px;
-    margin: 0;
-    min-width: 0%;
-    outline: none;
-    padding: 0;
-    z-index: 0;
-  `
-  const Line = styled.hr`
-  transform-origin: bottom left;
-  `
+const CreateContactForm = (props) => {
+  const initialFormState = {id:null, firstname:'', lastname:'', email:'', phonenumber:''}
+  const [contact, setContact] = useState(initialFormState)
+  
+  const handleInputChange = (event) =>{
+    const {name, value} = event.target
+
+    setContact({...contact, [name]: value})
+  }
   return (
-    <div>CreateContactForm
-    <Input placeholder='First name'/>
-    <Line/>
-    <Input placeholder='Last name'/>
-    <Line/>
-    <Input placeholder='Email'/>
-    <Line/>
-    <Input placeholder='Phone Number'/>
-    <Line/>
+    <div>                                                                                                                                                       b
+      <form
+      onSubmit={event=>{
+        event.preventDefault()
+        if(!contact.firstname || !contact.lastname || !contact.email || !contact.phonenumber)
+        return
+        props.createContact(contact)
+        setContact(initialFormState)
+      }}
+      >
+    <InputText placeholder='First name' name='firstname' value={contact.firstname} onChange={handleInputChange}/>
+    <InputText placeholder='Last name' name='lastname' value={contact.lastname} onChange={handleInputChange}/>
+    <InputText placeholder='Email' name='email' value={contact.email} onChange={handleInputChange}/>
+    <InputText placeholder='Phone Number' name='phonenumber' value={contact.phonenumber} onChange={handleInputChange}/>
     <SaveButton>Save</SaveButton>
     <CancelButton>Cancel</CancelButton>
-
+    </form>
     </div>
   )
 }
