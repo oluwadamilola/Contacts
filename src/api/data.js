@@ -1,9 +1,6 @@
 
-
-   export  const contact = [
-        { id: 1, firstname: 'Tania', lastname:'Dami', email: 'dammy@gmail.com', phonenumber: +23438246997 },
-        { id: 2, firstname: 'Tania', lastname:'Dami', email: 'koju@gmail.com', phonenumber: +23438246998 },
-        { id: 3, firstname: 'Tania', lastname:'Dami', email: 'dammykoju@gmail.com', phonenumber: +23438246999 },
-    
-      ]
- 
+export const usersContact = [
+  { id: 1, firstname: 'Tania', lastname: 'floppydiskette', email:'dammykoju@gmail', phonenumber:'07038246997' },
+  { id: 2, firstname: 'Craig', lastname: 'siliconeidolon',email:'dammykoj@gmail', phonenumber:'07038246997' },
+  { id: 3, firstname: 'Ben', lastname: 'benisphere', email:'dammykojuu@gmail', phonenumber:'07038246997' },
+]
