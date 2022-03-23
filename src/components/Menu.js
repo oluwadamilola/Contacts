@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ListGroup } from 'react-bootstrap';
+import ListGroup from 'react-bootstrap/ListGroup'
 import CreateContact from './contact/CreateContact';
 
 

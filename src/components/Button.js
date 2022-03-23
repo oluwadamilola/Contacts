@@ -30,5 +30,58 @@ margin: 1em;
 padding: 0.25em 3em;
 border: 2px solid #ff255e;
 border-radius: 10rem;
-
 `;
+export const Navbar = styled.nav`
+display:grid
+padding:16px;
+width:100%;
+background-color: grey;
+`;
+export const SearchBar = styled.div`
+display: grid;
+  place-items: center;
+`;
+export const InputText = styled.input`
+display:relative;
+  align-items: center;
+  width: 50%;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 0 2px solid;
+`;
+export const Wrapper = styled.div`
+  color:red
+  `;
+ export const Input = styled.input`
+  box-flex: 1;
+    flex-grow: 1;
+    flex-shrink: 1;
+    background-color: transparent;
+    border: none;
+    display: block;
+    font: 400 16px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    height: 24px;
+    line-height: 24px;
+    margin: 0;
+    min-width: 0%;
+    outline: none;
+    padding: 0;
+    z-index: 0;
+  `;
+  export const Line = styled.hr`
+  transform-origin: bottom left;
+  `
+ 
+      {/* {editing ? (
+      <Container> 
+     
+        <Row>
+         
+          <Col xs="7">
+            <ContactTable contacts={contacts} deleteContact={deleteContact} editContact={editContact}/>
+          </Col>
+          ): (
+          <CreateContactForm createContact={createContact} />
+        </Row>    
+      </Container> */}
+       
