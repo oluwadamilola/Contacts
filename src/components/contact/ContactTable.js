@@ -13,7 +13,7 @@ import {Table } from 'react-bootstrap'
         <th>username</th>
         <th>email</th>
         <th>phonenumber</th>
-        <th>Actions</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -27,8 +27,8 @@ import {Table } from 'react-bootstrap'
             <td>{email}</td>
             <td>{phonenumber}</td>
             <td>
-              <button className="button muted-button">Edit</button>
-              <button className="button muted-button">Delete</button>
+            <button onClick={() => props.deleteContact(id)} >Delete</button>
+              <button  onClick={()=>props.editContact(item)}   className="button muted-button">Edit</button>
             </td>
           </tr>
         );
