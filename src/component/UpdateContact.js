@@ -33,15 +33,14 @@ export default function UserUpdate() {
 
   const { id } = useParams();
   useEffect(() => {
-    fetch("https://www.mecallapi.com/api/users/"+id)
+    fetch("http://localhost:3005"+id)
       .then(res => res.json())
       .then(
         (result) => {
-          setFname(result.user.fname)
-          setLname(result.user.lname)
-          setUsername(result.user.username)
+          setFirstName(result.user.firstName)
+          setLastName(result.user.lastName)
           setEmail(result.user.email)
-          setAvatar(result.user.avatar)
+          setPhone(result.user.phone)
         }
       )
   }, [id])
@@ -49,14 +48,12 @@ export default function UserUpdate() {
   const handleSubmit = event => {
     event.preventDefault();
     var data = {
-      'id': id,
-      'fname': fname,
-      'lname': lname,
-      'username': username,
+      'firstName': firstName,
+      'lastName': lastName,
       'email': email,
-      'avatar': avatar,
+      'phone': phone,
     }
-    fetch('https://www.mecallapi.com/api/users/update', {
+    fetch('http://localhost:3005/contact/new', {
       method: 'PUT',
       headers: {
         Accept: 'application/form-data',
@@ -75,17 +72,16 @@ export default function UserUpdate() {
     )
   }
 
-  const [fname, setFname] = useState('');
-  const [lname, setLname] = useState('');
-  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [avatar, setAvatar] = useState('');
+  const [phone, setPhone] = useState('');
 
   return (
     <Container maxWidth="xs">
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
-          User
+          Edit
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -98,8 +94,8 @@ export default function UserUpdate() {
                 fullWidth
                 id="firstName"
                 label="First Name"
-                value={fname}
-                onChange={(e) => setFname(e.target.value)}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 autoFocus
               />
             </Grid>
@@ -110,21 +106,11 @@ export default function UserUpdate() {
                fullWidth
                id="lastName"
                label="Last Name"
-               value={lname}
-               onChange={(e) => setLname(e.target.value)}
+               value={lastName}
+               onChange={(e) => setLastName(e.target.value)}
              />
            </Grid>
-           <Grid item xs={12}>
-             <TextField
-               variant="outlined"
-               required
-               fullWidth
-               id="username"
-               label="Username"
-               value={username}
-               onChange={(e) => setUsername(e.target.value)}
-             />
-           </Grid>
+          
            <Grid item xs={12}>
              <TextField
                variant="outlined"
@@ -141,10 +127,10 @@ export default function UserUpdate() {
                variant="outlined"
                required
                fullWidth
-               id="avatar"
-               label="Avatar"
-               value={avatar}
-               onChange={(e) => setAvatar(e.target.value)}
+               id=""
+               label="Phone Number"
+               value={phone}
+               onChange={(e) => setPhone(e.target.value)}
              />
            </Grid>
          </Grid>

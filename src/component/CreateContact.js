@@ -62,7 +62,7 @@ export default function UserCreate() {
         <Container maxWidth="xs">
           <div className={classes.paper}>
             <Typography component="h1" variant="h5">
-              User
+              Add New Contact
             </Typography>
             <form className={classes.form} onSubmit={handleSubmit}>
               <Grid container spacing={2}>
@@ -104,8 +104,8 @@ export default function UserCreate() {
                 variant="outlined"
                 required
                 fullWidth
-                id="avatar"
-                label="Avatar"
+                id="phone"
+                label="Phone Number"
                 onChange={(e) => setPhone(e.target.value)}
               />
             </Grid>
