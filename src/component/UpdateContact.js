@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -15,10 +15,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
+
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
@@ -28,19 +25,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserUpdate() {
-  const classes = useStyles();
+export default function UpdateContact() {
 
+  const classes = useStyles();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const { id } = useParams();
+
   useEffect(() => {
-    fetch("http://localhost:3005"+id)
+    fetch('http://localhost:3005/' + id)
       .then(res => res.json())
       .then(
         (result) => {
-          setFirstName(result.user.firstName)
-          setLastName(result.user.lastName)
-          setEmail(result.user.email)
-          setPhone(result.user.phone)
+          setFirstName(result.firstName)
+          setLastName(result.lastName)
+          setEmail(result.email)
+          setPhone(result.phone)
         }
       )
   }, [id])
@@ -53,7 +55,7 @@ export default function UserUpdate() {
       'email': email,
       'phone': phone,
     }
-    fetch('http://localhost:3005/contact/new', {
+    fetch('http://localhost:3005/' + id, {
       method: 'PUT',
       headers: {
         Accept: 'application/form-data',
@@ -61,21 +63,15 @@ export default function UserUpdate() {
       },
       body: JSON.stringify(data),
     })
-    .then(res => res.json())
-    .then(
-      (result) => {
-        alert(result['message'])
-        if (result['status'] === 'ok') {
+      .then(res => res.json())
+      .then(
+        (result) => {
           window.location.href = '/';
         }
-      }
-    )
+      )
   }
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+
 
   return (
     <Container maxWidth="xs">
@@ -101,50 +97,50 @@ export default function UserUpdate() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-               variant="outlined"
-               required
-               fullWidth
-               id="lastName"
-               label="Last Name"
-               value={lastName}
-               onChange={(e) => setLastName(e.target.value)}
-             />
-           </Grid>
-          
-           <Grid item xs={12}>
-             <TextField
-               variant="outlined"
-               required
-               fullWidth
-               id="email"
-               label="Email"
-               value={email}
-               onChange={(e) => setEmail(e.target.value)}
-             />
-           </Grid>
-           <Grid item xs={12}>
-             <TextField
-               variant="outlined"
-               required
-               fullWidth
-               id=""
-               label="Phone Number"
-               value={phone}
-               onChange={(e) => setPhone(e.target.value)}
-             />
-           </Grid>
-         </Grid>
-         <Button
-           type="submit"
-           fullWidth
-           variant="contained"
-           color="primary"
-           className={classes.submit}
-         >
-           Update
-         </Button>
-       </form>
-     </div>
-     </Container>
+                variant="outlined"
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id=""
+                label="Phone Number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Update
+          </Button>
+        </form>
+      </div>
+    </Container>
   );
 }
