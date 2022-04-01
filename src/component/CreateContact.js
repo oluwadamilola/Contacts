@@ -5,8 +5,12 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import ContactList from "./ContactList";
+
+
 
 const useStyles = makeStyles((theme) => ({
+ 
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -18,66 +22,76 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%', 
     marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+
 }));
+
 export default function UserCreate() {
-    const classes = useStyles();
+  
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [error, setError] = useState('')
+  
+  const classes = useStyles();
     
-    const handleSubmit = event => {
-      event.preventDefault();
-      var data = {
-        'firstName': firstName,
-        'lastName': lastName,
-        'email': email,
-        'phone': phone,
-      }
-      fetch('http://localhost:3005', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data),
-      })
+  const handleSubmit = event => {
+    event.preventDefault();
+    var data = {
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'phone': phone,
+    }
+    fetch('http://localhost:3005', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    })
       .then(res => res.json())
       .then(
         (result) => {
-          alert(result['message'])
-          if (result['status'] === 'ok') {
-            window.location.href = '/';
+          if (result['status'] === 201 || result['status'] === 200) {
+          return(
+            window.location = '/'
+          )
+          }
+          else {
+            setError('contact already exists')
           }
         }
-        )
-      }
-    
-      const [firstName, setFirstName] = useState('');
-      const [lastName, setLastName] = useState('');
-      const [email, setEmail] = useState('');
-      const [phone, setPhone] = useState('');
-      return (
-        <Container maxWidth="xs">
-          <div className={classes.paper}>
-            <Typography component="h1" variant="h5">
-              Add New Contact
-            </Typography>
-            <form className={classes.form} onSubmit={handleSubmit}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="fname"
-                    name="firstName"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    onChange={(e) => setFirstName(e.target.value)}
-                    autoFocus
-                    />
+      )
+  }
+
+
+  return (
+    <Container maxWidth="xs">
+      <div className={classes.paper}>
+        <Typography component="h1" variant="h5">
+          Add New Contact
+        </Typography>
+        <form className={classes.form} onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="fname"
+                name="firstName"
+                variant="outlined"
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                onChange={(e) => setFirstName(e.target.value)}
+                autoFocus
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -120,7 +134,8 @@ export default function UserCreate() {
             Create
           </Button>
         </form>
+        <div className="message">{error ? <p>{error}</p> : null}</div>
       </div>
-      </Container>
+    </Container>
   );
 }
