@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -15,10 +15,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
+
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
@@ -28,20 +25,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserUpdate() {
-  const classes = useStyles();
+export default function UpdateContact() {
 
+  const classes = useStyles();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const { id } = useParams();
+
   useEffect(() => {
-    fetch("https://www.mecallapi.com/api/users/"+id)
+    fetch('http://localhost:3005/' + id)
       .then(res => res.json())
       .then(
         (result) => {
-          setFname(result.user.fname)
-          setLname(result.user.lname)
-          setUsername(result.user.username)
-          setEmail(result.user.email)
-          setAvatar(result.user.avatar)
+          setFirstName(result.firstName)
+          setLastName(result.lastName)
+          setEmail(result.email)
+          setPhone(result.phone)
         }
       )
   }, [id])
@@ -49,14 +50,12 @@ export default function UserUpdate() {
   const handleSubmit = event => {
     event.preventDefault();
     var data = {
-      'id': id,
-      'fname': fname,
-      'lname': lname,
-      'username': username,
+      'firstName': firstName,
+      'lastName': lastName,
       'email': email,
-      'avatar': avatar,
+      'phone': phone,
     }
-    fetch('https://www.mecallapi.com/api/users/update', {
+    fetch('http://localhost:3005/' + id, {
       method: 'PUT',
       headers: {
         Accept: 'application/form-data',
@@ -64,28 +63,21 @@ export default function UserUpdate() {
       },
       body: JSON.stringify(data),
     })
-    .then(res => res.json())
-    .then(
-      (result) => {
-        alert(result['message'])
-        if (result['status'] === 'ok') {
+      .then(res => res.json())
+      .then(
+        (result) => {
           window.location.href = '/';
         }
-      }
-    )
+      )
   }
 
-  const [fname, setFname] = useState('');
-  const [lname, setLname] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [avatar, setAvatar] = useState('');
+
 
   return (
     <Container maxWidth="xs">
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
-          User
+          Edit
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -98,67 +90,57 @@ export default function UserUpdate() {
                 fullWidth
                 id="firstName"
                 label="First Name"
-                value={fname}
-                onChange={(e) => setFname(e.target.value)}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 autoFocus
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-               variant="outlined"
-               required
-               fullWidth
-               id="lastName"
-               label="Last Name"
-               value={lname}
-               onChange={(e) => setLname(e.target.value)}
-             />
-           </Grid>
-           <Grid item xs={12}>
-             <TextField
-               variant="outlined"
-               required
-               fullWidth
-               id="username"
-               label="Username"
-               value={username}
-               onChange={(e) => setUsername(e.target.value)}
-             />
-           </Grid>
-           <Grid item xs={12}>
-             <TextField
-               variant="outlined"
-               required
-               fullWidth
-               id="email"
-               label="Email"
-               value={email}
-               onChange={(e) => setEmail(e.target.value)}
-             />
-           </Grid>
-           <Grid item xs={12}>
-             <TextField
-               variant="outlined"
-               required
-               fullWidth
-               id="avatar"
-               label="Avatar"
-               value={avatar}
-               onChange={(e) => setAvatar(e.target.value)}
-             />
-           </Grid>
-         </Grid>
-         <Button
-           type="submit"
-           fullWidth
-           variant="contained"
-           color="primary"
-           className={classes.submit}
-         >
-           Update
-         </Button>
-       </form>
-     </div>
-     </Container>
+                variant="outlined"
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id=""
+                label="Phone Number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Update
+          </Button>
+        </form>
+      </div>
+    </Container>
   );
 }

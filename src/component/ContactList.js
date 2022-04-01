@@ -11,35 +11,36 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Avatar from '@material-ui/core/Avatar';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      flexGrow: 1,
-    },
-    container: {
-      marginTop: theme.spacing(2),
-    },
-    paper: {
-      padding: theme.spacing(2),
-      color: theme.palette.text.secondary,
-    },
-  }));
-  
-  export default function ContactList() {
-    const classes = useStyles();
-    const [contacts, setContacts] = useState([]);
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+  container: {
+    marginTop: theme.spacing(2),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    color: theme.palette.text.secondary,
+  },
+}));
+
+export default function ContactList() {
+  const classes = useStyles();
+  const [contacts, setContacts] = useState([]);
+  const [error, setError] = useState("")
   useEffect(() => {
     ContactGet()
   }, [])
-  
+
+  // function fetch contact from the api
   const ContactGet = () => {
     fetch('http://localhost:3005')
       .then(res => res.json())
@@ -51,13 +52,13 @@ const useStyles = makeStyles((theme) => ({
   }
 
   const UpdateContact = id => {
-    window.location = '/update/'+id
+    window.location = '/update/' + id
   }
   const ContactDelete = id => {
     var data = {
       'id': id
     }
-    fetch('http://localhost:3005/:contactID', {
+    fetch('http://localhost:3005/' + id, {
       method: 'DELETE',
       headers: {
         Accept: 'application/form-data',
@@ -65,19 +66,20 @@ const useStyles = makeStyles((theme) => ({
       },
       body: JSON.stringify(data),
     })
-    .then(res => res.json())
-    .then(
-      (result) => {
-        alert(result['message'])
-        if (result['status'] === 'ok') {
-          ContactGet();
+      .then(res => res.json())
+      .then(
+        (result) => {
+          if (result['status'] === 200) {
+            setError('contact deleted')
+          }
+          window.location.reload()
+
         }
-      }
-    )
+      )
   }
   return (
     <div className={classes.root}>
-      <Container className={classes.container} maxWidth="lg">    
+      <Container className={classes.container} maxWidth="lg">
         <Paper className={classes.paper}>
           <Box display="flex">
             <Box flexGrow={1}>
@@ -94,40 +96,40 @@ const useStyles = makeStyles((theme) => ({
             </Box>
           </Box>
           <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="right">ID</TableCell>
-                <TableCell align="center">First Name</TableCell>
-                <TableCell align="left">Last Name</TableCell>
-                <TableCell align="left">Email</TableCell>
-                <TableCell align="left">Phone</TableCell>
-                <TableCell align="center">Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {contacts.map((user) => (
-                <TableRow key={user.ID}>
-                  <TableCell align="right">{user.id}</TableCell>
-  
-                  <TableCell align="center">{user.firstName}</TableCell>
-                  <TableCell align="left">{user.lastName}</TableCell>
-                   <TableCell align="left">{user.email}</TableCell>
-                   <TableCell align="left">{user.phone}</TableCell>
-                  <TableCell align="center">
-                    <ButtonGroup color="primary" aria-label="outlined primary button group">
-                      <Button onClick={() => UpdateContact(user.id)}>Edit</Button>
-                      <Button onClick={() => ContactDelete(user.id)}>Del</Button>
-                    </ButtonGroup>
-                  </TableCell>
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="right">ID</TableCell>
+                  <TableCell align="center">First Name</TableCell>
+                  <TableCell align="left">Last Name</TableCell>
+                  <TableCell align="left">Email</TableCell>
+                  <TableCell align="left">Phone</TableCell>
+                  <TableCell align="center">Action</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {contacts.map((user) => (
+                  <TableRow key={user.ID}>
+                    <TableCell align="right">{user.id}</TableCell>
+
+                    <TableCell align="center">{user.firstName}</TableCell>
+                    <TableCell align="left">{user.lastName}</TableCell>
+                    <TableCell align="left">{user.email}</TableCell>
+                    <TableCell align="left">{user.phone}</TableCell>
+                    <TableCell align="center">
+                      <ButtonGroup color="primary" aria-label="outlined primary button group">
+                        <Button onClick={() => UpdateContact(user.id)}>Edit</Button>
+                        <Button onClick={() => ContactDelete(user.id)}>Del</Button>
+                      </ButtonGroup>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Paper>
       </Container>
     </div>
-    
+
   );
 }
